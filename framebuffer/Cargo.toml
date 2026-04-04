@@ -1,0 +1,9 @@
+[package]
+name = "framebuffer"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+spin = { workspace = true }
+logging = { workspace = true }
+limine = { workspace = true }

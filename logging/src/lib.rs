@@ -27,7 +27,7 @@ impl Log for SerialLogger {
 #[cfg(debug_assertions)]
 pub fn init_logger() {
     log::set_logger(&SerialLogger).expect("logger already set");
-    log::set_max_level(LevelFilter::Info);
+    log::set_max_level(LevelFilter::Debug);
 }
 
 #[cfg(not(debug_assertions))]

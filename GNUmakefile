@@ -11,7 +11,7 @@ $(call USER_VARIABLE,KARCH,x86_64)
 # Default user QEMU flags. These are appended to the QEMU command calls.
 $(call USER_VARIABLE,QEMUFLAGS,-m 2G -serial stdio)
 
-# 编译等级
+# 编译等级, 只能是debug或release
 compile_opt = debug
 
 override IMAGE_NAME := template-$(KARCH)

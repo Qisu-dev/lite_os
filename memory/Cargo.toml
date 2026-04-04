@@ -1,0 +1,11 @@
+[package]
+name = "memory"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+spin = { workspace = true }
+limine = { workspace = true }
+linked_list_allocator = "0.10.5"
+x86_64 = { workspace = true }
+logging = { workspace = true }
