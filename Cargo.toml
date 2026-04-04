@@ -1,0 +1,6 @@
+[workspace]
+members = ["kernel", "logging", "member"]
+default-members = ["kernel"]
+
+[workspace.dependencies]
+limine = "0.6.3"

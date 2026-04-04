@@ -1,7 +1,10 @@
 [package]
-name = "limine-rust-template"
+name = "lite_os"
 version = "0.1.0"
 edition = "2024"
+readme = "../README.md"
+autotests = false
 
 [dependencies]
-limine = "0.5"
+limine = { workspace = true }
+logging = { path = "../logging" }

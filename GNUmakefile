@@ -9,7 +9,10 @@ override USER_VARIABLE = $(if $(filter $(origin $(1)),default undefined),$(eval 
 $(call USER_VARIABLE,KARCH,x86_64)
 
 # Default user QEMU flags. These are appended to the QEMU command calls.
-$(call USER_VARIABLE,QEMUFLAGS,-m 2G)
+$(call USER_VARIABLE,QEMUFLAGS,-m 2G -serial stdio)
+
+# 编译等级
+compile_opt = debug
 
 override IMAGE_NAME := template-$(KARCH)
 
@@ -143,14 +146,26 @@ limine/limine:
 	git clone https://github.com/limine-bootloader/limine.git --branch=v10.x-binary --depth=1
 	$(MAKE) -C limine
 
+
+
 .PHONY: kernel
+
+compile_opt ?= dev
+ifeq ($(compile_opt), debug)
+	compile_opt_name = dev
+else ifeq ($(compile_opt), release)
+	compile_opt_name = release
+else
+    $(error Unknown compile_opt: $(compile_opt))
+endif
+
 kernel:
-	$(MAKE) -C kernel
+	RUSTFLAGS=" -C relocation-model=static -C code-model=kernel" cargo build --target x86_64-unknown-none --profile $(compile_opt_name)
 
 $(IMAGE_NAME).iso: limine/limine kernel
 	rm -rf iso_root
 	mkdir -p iso_root/boot
-	cp -v kernel/kernel iso_root/boot/
+	cp -v target/x86_64-unknown-none/$(compile_opt)/lite_os iso_root/boot/kernel
 	mkdir -p iso_root/boot/limine
 	cp -v limine.conf iso_root/boot/limine/
 	mkdir -p iso_root/EFI/BOOT
@@ -219,10 +234,9 @@ endif
 
 .PHONY: clean
 clean:
-	$(MAKE) -C kernel clean
+	cargo clean
 	rm -rf iso_root $(IMAGE_NAME).iso $(IMAGE_NAME).hdd
 
 .PHONY: distclean
 distclean: clean
-	$(MAKE) -C kernel distclean
 	rm -rf limine ovmf

@@ -2,3 +2,8 @@
 /ovmf
 *.iso
 *.hdd
+.vscode
+target
+limine
+Cargo.lock
+edk2-ovmf
